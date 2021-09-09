@@ -13,17 +13,23 @@ app.config["MYSQL_DB"] = "test"
 
 db = MySQL(app)
 
-
+# MAIN PAGE
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == "POST":
+        sensor = request.form["sensor"]
+        select = request.form.getlist('selectBox1')
+        as_dict2 = request.form.getlist('selectBox4')
+        return str(request.form.serialize('selectedBox1'))
+
     return render_template("MainPage.html"), 200
 
 
-# MAIN PAGE
-@app.route("/Mainpage", methods=['GET', 'POST'])
-def MainPage():
-    return render_template('MainPage.html'), 200
 
+
+@app.route("/test/<tes>")
+def test(tes):
+    return f"<h1>{tes}</h1>"
 
 # SHOW ALL CONFIGS:
 @app.route("/Configs", methods=['GET', 'POST'])
@@ -41,7 +47,10 @@ def specConfig(sensor_model):
     cur.execute("SELECT configuration_id, model_name,output,handler FROM configurations where model_name = %s",
                 [sensor_model])
     conf = cur.fetchall()
-    return render_template('SpecificSensor.html', conf=conf, sensor_model=sensor_model), 200
+    if conf is None:
+        return "Not found", 404
+    else:
+        return render_template('SpecificSensor.html', conf=conf, sensor_model=sensor_model), 200
 
 
 # CREATE NEW CONFIG, ERROR WHEN MODEL EXISTS
