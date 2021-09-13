@@ -8,7 +8,7 @@ SpecyficSensor - Getting configuration for a specific sensor model.
 app.py - main logic with routes
 handlers.py - handlers methods, saving to file.
 style.css - additionaly from task 4
-# Routes:
+# Endpoints:
 localhost:/ - main page with layout
 localhost:/<sensor_model> - configuration for specific sensor
 localhost:/Configs - all configurations 
